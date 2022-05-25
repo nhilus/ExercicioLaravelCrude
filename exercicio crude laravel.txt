@@ -1,0 +1,30 @@
+Brand
+-name
+-created_at
+-updated_at
+-deleted_at
+ 
+Car
+-registration
+-year_of_manufacture
+-color
+-created_at
+-updated_at
+-deleted_at
+ 
+Relationships
+Brand 1-----N Car
+Car   1-----1 Brand
+ 
+Ex:
+*Create Project
+*Install Auth
+*Create Migration
+*Seed Para algumas brands [ex: BMW, Renault]
+ 
+CRUD Resource:
+*Brand
+ 
+*Car
+ Form:
+ -Combobox com uma picklist de brands
