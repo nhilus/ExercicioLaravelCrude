@@ -10,11 +10,17 @@ class CarController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     *@return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($request->search){
+            $cars = Car::where('name', 'LIKE', '%' . $request->search . '%')->orderBy('id', 'desc')->paginate(10);
+        }else{
+            $cars = Car::orderBy('id', 'desc')->paginate(10);
+        }
+
+        return view('pages.cars.index', ['cars'=> $cars]);
     }
 
     /**
@@ -24,7 +30,7 @@ class CarController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.cars.create',['brands'=> \App\Brand::all()] );
     }
 
     /**
@@ -35,7 +41,23 @@ class CarController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'brand_id'              => 'required',
+            'registration'          => 'required',
+            'year_of_registration'  => 'required',
+            'color'                 => 'required'
+        ]);
+
+        //Player::create($request->all());
+        $car                            = new Car();
+        $car ->brand_id                 = $request->brand_id;
+        $car ->registration             = $request->registration;
+        $car ->year_of_registration     = $request->year_of_registration;
+        $car ->color                    = $request->color;
+        $car ->save();
+
+        return redirect('cars')->with('status','Car added successfully!');
+
     }
 
     /**
@@ -46,7 +68,8 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        //
+        return view('pages.cars.show', ['car' => $car]);
+
     }
 
     /**
@@ -57,7 +80,9 @@ class CarController extends Controller
      */
     public function edit(Car $car)
     {
-        //
+
+        return view('pages.cars.edit', ['car' => $car, 'brands'=> \App\Brand::all()]);
+
     }
 
     /**
@@ -69,7 +94,14 @@ class CarController extends Controller
      */
     public function update(Request $request, Car $car)
     {
-        //
+        $car                            = Car::find($car->id);
+        $car ->brand_id                 = $request->brand_id;
+        $car ->registration             = $request->registration;
+        $car ->year_of_registration     = $request->year_of_registration;
+        $car ->color                    = $request->color;
+        $car ->save();
+
+        return redirect('cars')->with('status','Car edited successfully!');
     }
 
     /**
@@ -80,6 +112,24 @@ class CarController extends Controller
      */
     public function destroy(Car $car)
     {
-        //
+        $car->delete();
+        return redirect('cars')->with('status','Car deleted successfully!');;
     }
+
+    public function truncate()
+    {
+        Player::truncate();
+        return redirect('cars')->with('status','Cars deleted successfully!');;
+    }
+
+    /**
+     * Show records
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+
 }
+
+
+
