@@ -94,14 +94,8 @@ class CarController extends Controller
      */
     public function update(Request $request, Car $car)
     {
-        $car                            = Car::find($car->id);
-        $car ->brand_id                 = $request->brand_id;
-        $car ->registration             = $request->registration;
-        $car ->year_of_registration     = $request->year_of_registration;
-        $car ->color                    = $request->color;
-        $car ->save();
-
-        return redirect('cars')->with('status','Car edited successfully!');
+        $car->update($request->all());
+        return redirect('cars')->with('status','Car updated successfully!');
     }
 
     /**

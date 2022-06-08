@@ -87,7 +87,7 @@ class BrandSeeder extends Seeder
             ['name' => 'Yugo' ,'code' => 'YUGO'],
         ];
 
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 60; $i++) {
             \DB::table('Brands')->insert([
                 'name' => $brands[$i]['name'],
                 'created_at' => now(),

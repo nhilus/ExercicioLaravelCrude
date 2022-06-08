@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Brand;
 use Illuminate\Http\Request;
+use App\Exports\BrandsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BrandController extends Controller
 {
@@ -105,5 +107,10 @@ class BrandController extends Controller
         Brand::truncate();
 
         return redirect('brands')->with('status','All brands deleted successfully!');
+    }
+
+    public function export()
+    {
+        return Excel::download(new BrandsExport, 'brands.xlsx');
     }
 }
